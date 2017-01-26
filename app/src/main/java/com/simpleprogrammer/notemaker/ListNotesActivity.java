@@ -14,7 +14,6 @@ import android.widget.ListView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ListNotesActivity extends AppCompatActivity {
@@ -29,6 +28,12 @@ public class ListNotesActivity extends AppCompatActivity {
             return;
         }
 
+        if (resultCode == EditNoteActivity.RESULT_DELETE)
+        {
+            notes.remove(editingNoteid);
+            editingNoteid = -1;
+            populatelist();
+        }
         Serializable extra = data.getSerializableExtra("Note");
         if(extra != null)
         {
@@ -67,11 +72,11 @@ public class ListNotesActivity extends AppCompatActivity {
 
         registerForContextMenu(notesListView);
 
-        notes.add(new Note("First Note", "Blah blah", new Date()));
-        notes.add(new Note("Second Note", "Blah blah", new Date()));
-        notes.add(new Note("Third Note", "Blah blah", new Date()));
-        notes.add(new Note("Fourth Note", "Blah blah", new Date()));
-        notes.add(new Note("Fifth Note", "Blah blah", new Date()));
+        //notes.add(new Note("First Note", "Blah blah", new Date()));
+        //notes.add(new Note("Second Note", "Blah blah", new Date()));
+        //notes.add(new Note("Third Note", "Blah blah", new Date()));
+        //notes.add(new Note("Fourth Note", "Blah blah", new Date()));
+        //notes.add(new Note("Fifth Note", "Blah blah", new Date()));
         //notes.add(new Note("Sixth Note", "Blah blah", new Date()));
         //notes.add(new Note("Seventh Note", "Blah blah", new Date()));
 
@@ -87,6 +92,7 @@ public class ListNotesActivity extends AppCompatActivity {
     }
 
     //TO MAKE THE ADD_NOTE WORK (ONOPTIONS ITEM)
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //notes.add(new Note("Added Note", "Blah", new Date()));
@@ -104,6 +110,8 @@ public class ListNotesActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.context_menu, menu);
     }
+
+
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {

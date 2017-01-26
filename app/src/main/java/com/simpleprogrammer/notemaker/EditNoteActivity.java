@@ -1,5 +1,6 @@
 package com.simpleprogrammer.notemaker;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -22,9 +24,16 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import static android.R.attr.id;
+import static android.R.attr.interpolator;
+import static android.R.attr.onClick;
+
 public class EditNoteActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-            private boolean isInEditMode = true;
+
+    public static final int RESULT_DELETE = -500;
+    private boolean isInEditMode = true;
+    private boolean isAddingNote = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,8 @@ public class EditNoteActivity extends AppCompatActivity
             titleEditText.setEnabled(false);
             noteEditText.setEnabled(false);
             saveButton.setText("Edit");
+
+            isAddingNote = false;
 
         }
 
@@ -105,7 +116,6 @@ public class EditNoteActivity extends AppCompatActivity
             }
         });
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -138,10 +148,15 @@ public class EditNoteActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        if(isAddingNote)
+        {
+            menu.removeItem(R.id.deleteNote);
+        }
         return true;
     }
 
@@ -150,15 +165,37 @@ public class EditNoteActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+       // int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        //if (id == R.id.action_settings) {
+          //  return true;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.Message);
+        builder.setTitle("Confirm Delete");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent returnIntent = new Intent();
+
+                setResult(RESULT_DELETE, returnIntent);
+                finish();
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.create().show();
+
+        return true;
+
         }
 
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
