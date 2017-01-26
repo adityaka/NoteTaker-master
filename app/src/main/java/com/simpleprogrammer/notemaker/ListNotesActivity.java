@@ -1,8 +1,8 @@
 package com.simpleprogrammer.notemaker;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,15 +22,30 @@ public class ListNotesActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_CANCELED)
+        {
+            return;
+        }
+
         Serializable extra = data.getSerializableExtra("Note");
         if(extra != null)
         {
             Note newNote = (Note)extra;
-            notes.add(newNote);
+            if (editingNoteid > -1)
+            {
+                notes.set(editingNoteid, newNote);
+                editingNoteid = -1;
+            }
+            else
+            {
+                notes.add(newNote);
+            }
+
             populatelist();
         }
     }
 
+    private int editingNoteid = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +58,8 @@ public class ListNotesActivity extends AppCompatActivity {
                                     long id) {
                 Intent editNoteIntent = new Intent(view.getContext(), EditNoteActivity.class);
                 editNoteIntent.putExtra("Note", notes.get(itemNumber));
-                startActivity(editNoteIntent);
+                editingNoteid = itemNumber; //new addition
+                startActivityForResult(editNoteIntent, 1); // new addition
             }
         });
 

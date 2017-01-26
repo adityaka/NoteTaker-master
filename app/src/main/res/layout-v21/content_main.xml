@@ -46,7 +46,7 @@
                 android:id="@+id/titleEditText"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:layout_weight="0.17"
-                tools:ignore="InefficientWeight" />
+                tools:ignore="InefficientWeight,LabelFor" />
 
             <TextView
                 android:text="Date:"
@@ -64,7 +64,7 @@
                 android:ems="10"
                 android:id="@+id/dateTextView"
                 android:textAppearance="@style/TextAppearance.AppCompat"
-                tools:ignore="TextFields" />
+                tools:ignore="LabelFor,TextFields" />
 
         </LinearLayout>
 
@@ -83,7 +83,7 @@
             android:ems="10"
             android:id="@+id/noteEdittext"
             android:layout_weight="0.98"
-            tools:ignore="InefficientWeight" />
+            tools:ignore="InefficientWeight,LabelFor" />
 
         <Button
             android:text="Save"
@@ -93,6 +93,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
             tools:ignore="HardcodedText" />
+
+        <Button
+            android:text="@android:string/cancel"
+            android:layout_width="107dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancelButton"
+            android:layout_gravity="bottom|center_horizontal"
+            android:elevation="0dp" />
+
     </LinearLayout>
 
 </RelativeLayout>

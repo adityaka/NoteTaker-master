@@ -32,6 +32,7 @@ public class EditNoteActivity extends AppCompatActivity
         setContentView(R.layout.activity_edit_note);
 
         final Button saveButton = (Button)findViewById(R.id.saveButton);
+        final Button cancelButton = (Button)findViewById(R.id.cancelButton);
         final EditText titleEditText = (EditText)findViewById(R.id.titleEditText);
         final EditText noteEditText = (EditText)findViewById(R.id.noteEdittext);
         final TextView dateTextView = (TextView)findViewById(R.id.dateTextView);
@@ -43,12 +44,24 @@ public class EditNoteActivity extends AppCompatActivity
             titleEditText.setText(note.getTitle());
             noteEditText.setText(note.getNote());
 
-           //DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-           //String date = dateFormat.format(note.getDate());
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+            String date = dateFormat.format(note.getDate());
+            dateTextView.setText(date);
 
-            //dateTextView.setText(date);
+            isInEditMode = false;
+            titleEditText.setEnabled(false);
+            noteEditText.setEnabled(false);
+            saveButton.setText("Edit");
 
         }
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED, new Intent());
+                finish();
+            }
+        });
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +90,7 @@ public class EditNoteActivity extends AppCompatActivity
                     returnIntent.putExtra("Note", note);
                     setResult(RESULT_OK, returnIntent);
                     finish();
+
 
                 }
                 else
