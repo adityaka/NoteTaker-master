@@ -3,7 +3,9 @@ package com.simpleprogrammer.notemaker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -63,6 +65,8 @@ public class ListNotesActivity extends AppCompatActivity {
             }
         });
 
+        registerForContextMenu(notesListView);
+
         notes.add(new Note("First Note", "Blah blah", new Date()));
         notes.add(new Note("Second Note", "Blah blah", new Date()));
         notes.add(new Note("Third Note", "Blah blah", new Date()));
@@ -92,6 +96,25 @@ public class ListNotesActivity extends AppCompatActivity {
         //startActivity(editNoteIntent);
         startActivityForResult(editNoteIntent, 1);
         return true;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        //return super.onContextItemSelected(item);
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item. getMenuInfo();
+        notes.remove(info.position);
+        populatelist();
+
+        return true;
+
     }
 
     private void populatelist() {
